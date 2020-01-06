@@ -18,9 +18,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         home: Scaffold(
             appBar: AppBar(
-              title: Text('GridView'),
+              title: Text('賞味期限一覧'),
             ),
             body: GridView.builder(
+                padding: EdgeInsets.all(10.0),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   childAspectRatio: 0.8,
@@ -34,21 +35,44 @@ class MyApp extends StatelessWidget {
                       new GridItem("玉ねぎ", "pic3"),
                       new GridItem("じゃがいも", "pic4"),]);
                   }
-                  return _photoItem(grid[index]);
+                  return _gridWidget(grid[index]);
                 }
             )
         )
     );
   }
 
-  Widget _photoItem(GridItem item) {
+  Widget _gridWidget(GridItem item) {
     var assetsImage = "images/" + item.image + ".jpg";
     return Container(
       child: Column(
           children: <Widget>[
             AspectRatio(
               aspectRatio: 1.0,
-              child: Image.asset(assetsImage, fit: BoxFit.cover,),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    Image.asset(assetsImage, fit: BoxFit.cover,),
+                    Container(
+                        color: Colors.white.withOpacity(0.7),
+                    ),
+                    Container(
+                      child: CircularProgressIndicator(value: 0.8, strokeWidth: 6.0,),
+                      padding: EdgeInsets.all(10.0),
+                    ),
+                    Container(
+                      child: Text(
+                        "残り10日",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      padding: EdgeInsets.all(10.0),
+                      alignment: Alignment.center,
+                    ),
+                  ],
+                )
             ),
             Expanded(
               child: Container(
@@ -56,13 +80,13 @@ class MyApp extends StatelessWidget {
                   fit: BoxFit.cover,
                   child: Text(item.name),
                 ),
-                color: Colors.grey,
+                color: Colors.grey.withOpacity(0.1),
                 alignment: Alignment.center,
               ),
             ),
           ],
         ),
-      padding: EdgeInsets.all(5.0),
+      padding: EdgeInsets.all(10.0),
     );
   }
 }
